@@ -164,9 +164,12 @@ export class AeshnaScene {
     try {
       dragonflyStore.setLoadingProgress(15, 'SYNCHRONIZING OPTICAL ENVIRONMENT...');
 
+      // Base URL from Vite configuration for GitHub Pages compatibility
+      const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
       // Load studio EXR environment
       const exrLoader = new EXRLoader();
-      const exrData = await exrLoader.loadAsync('/environments/studio.exr');
+      const exrData = await exrLoader.loadAsync(`${baseUrl}environments/studio.exr`);
       this.envTexture = this.pmremGenerator.fromEquirectangular(exrData).texture;
       this.scene.environment = this.envTexture;
       this.scene.environmentIntensity = 0.7;
@@ -175,7 +178,7 @@ export class AeshnaScene {
       dragonflyStore.setLoadingProgress(45, 'DECODING SPECIMEN CARAPACE...');
 
       // Load GLB
-      this.dragonfly = await loadDragonfly('/models/AESHNA_MACHINA_WEB_HQ.glb', (p) => {
+      this.dragonfly = await loadDragonfly(`${baseUrl}models/AESHNA_MACHINA_WEB_HQ.glb`, (p) => {
         const mapped = Math.round(45 + p * 0.5);
         dragonflyStore.setLoadingProgress(mapped, `VERIFYING KINEMATICS (${p}%)...`);
       });
